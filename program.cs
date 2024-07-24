@@ -26,7 +26,12 @@ commands.Add(new string[]
     "apprentice delete all text",
     "apprentice backspace",
     "apprentice command list",
-    "apprentice toggle volume"
+    "apprentice toggle volume",
+    "apprentice open discord",
+    "apprentice open spotify",
+    "apprentice copy text",
+    "apprentice paste text",
+    "apprentice select all text"
 });
 
 GrammarBuilder gb = new GrammarBuilder();
@@ -119,6 +124,29 @@ recognizer.SpeechRecognized += (sender, e) =>
                     sim.Keyboard.KeyPress(VirtualKeyCode.BACK);
                     synthesizer.Speak("Backspace");
                     break;
+                case "apprentice open discord":
+                    OpenUrl("https://discord.com/channels/@me", "Opened Discord");
+                    break;
+                case "apprentice open spotify":
+                    OpenUrl("https://open.spotify.com/", "Opened spotify");
+                    break;
+
+                case "apprentice copy text":
+                    sim.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_C);
+
+                    synthesizer.Speak("Copied text");
+                    break;
+                case "apprentice paste text":
+                    sim.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_V);
+
+                    synthesizer.Speak("Pasted text");
+                    break;
+                case "apprentice select all text":
+                    sim.Keyboard.ModifiedKeyStroke(VirtualKeyCode.CONTROL, VirtualKeyCode.VK_A);
+
+                    synthesizer.Speak("Selected text");
+                    break;
+
 
                 case "apprentice command list":
                     string commandList = "apprentice open youtube\n" +
@@ -135,7 +163,11 @@ recognizer.SpeechRecognized += (sender, e) =>
                                          "apprentice delete all text\n" +
                                          "apprentice backspace\n" +
                                          "apprentice command list\n" +
-                                         "apprentice toggle volume";
+                                         "apprentice toggle volume\n" +
+                                         "apprentice open discord\n" +
+                                         "apprentice open spotify\n" +
+                                         "apprentice copy text\n" +
+                                         "apprentice select all text";
                     Console.WriteLine(commandList);
                     synthesizer.Speak("Command List");
                     break;
@@ -159,7 +191,7 @@ void AdjustVolume(VirtualKeyCode key, string response)
     synthesizer.Speak(response);
 }
 
-=
+
 recognizer.SetInputToDefaultAudioDevice();
 
 recognizer.RecognizeAsync(RecognizeMode.Multiple);
